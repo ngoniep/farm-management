@@ -1,0 +1,81 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/FarmManager
+    username: postgres
+    password: rootPassword
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        health-check-path: /health
+
+       # ip-address: 127.0.0.1
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  application:
+    name: farm-service
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+#management:
+#  health:
+#    defaults:
+#      enabled: true
+#  security:
+#    enabled: false
+#  endpoints:
+#    actuator:
+#      enabled:false
+#    jmx:
+#      exposure:
+#        include: health,info
+#    web:
+#      exposure:
+#        include: "*"
+#    enabled-by-default: false
+#
+management:
+  security:
+    enabled: false
+  endpoint:
+    health:
+      show-details: always
+    beans:
+      enabled: true
+    consul:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /
+    enabled-by-default: true
+  health:
+    defaults:
+      enabled: true
+      #keytool -genkey -alias https-example -storetype JKS -keystore https-example.jks -keyalg RSA -keysize 2048 -validity 365
+security:
+  oauth2:
+    client:
+      clientId: mobile
+      clientSecret: pin
+      accessTokenUri: http://10.170.3.46:8080/auth/api/oauth/token
+      userAuthorizationUri: http://10.170.3.46:8080/auth/api/oauth/authorize
+    resource:
+      user-info-uri: http://10.170.3.46:8080/auth/api/oauth/userinfo
+      token-info-uri: http://10.170.3.46:8080/auth/api/oauth/check_token
